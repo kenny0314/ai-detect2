@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Literacy: Detecting Fakes</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: rgba(0,0,0,0.75);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #00fff7;
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    .question {
+      font-size: 1.2em;
+      margin: 20px 0;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #00fff7;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .options button:hover {
+      background: #00cccc;
+    }
+    .hidden {
+      display: none;
+    }
+    .result {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #00fff7;
+      margin: 20px 0;
+    }
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .action-buttons button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ffffff;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .action-buttons button:hover {
+      background-color: #cccccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="quiz-container">
+    <h1>AI Literacy: Detecting Fakes</h1>
+    <div id="quiz-box">
+      <div class="question" id="question"></div>
+      <div class="options" id="options"></div>
+    </div>
+    <div id="result" class="hidden">
+      <div class="result" id="score"></div>
+      <div class="action-buttons">
+        <button onclick="retryQuiz()">Retry</button>
+        <button onclick="window.location.href='https://new.express.adobe.com/webpage/NhRZcBILvQe4s'">Go Back Home</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "Which is a common sign of AI-generated fake news?",
+        options: [
+          "Perfect grammar and emotional language",
+          "Multiple credible sources",
+          "Date and time stamps",
+          "Neutral tone throughout"
+        ],
+        answer: 0
+      },
+      {
+        question: "What is a typical clue that a video may be a deepfake?",
+        options: [
+          "Low video resolution",
+          "Blinking and facial movements are unnatural",
+          "Good lighting and background",
+          "Clear audio"
+        ],
+        answer: 1
+      },
+      {
+        question: "What should you do first if you suspect a headline is fake?",
+        options: [
+          "Share it immediately to warn others",
+          "Check the original source and cross-reference",
+          "Comment with your opinion",
+          "Screenshot and archive it"
+        ],
+        answer: 1
+      },
+      {
+        question: "Which AI tool is often used to create deepfake videos?",
+        options: [
+          "Stable Diffusion",
+          "DALL·E",
+          "DeepFaceLab",
+          "ChatGPT"
+        ],
+        answer: 2
+      },
+      {
+        question: "What’s the best strategy to build AI literacy?",
+        options: [
+          "Rely only on social media updates",
+          "Avoid AI completely",
+          "Use only one trusted news app",
+          "Engage in critical thinking and diverse research"
+        ],
+        answer: 3
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const quizBox = document.getElementById('quiz-box');
+    const resultEl = document.getElementById('result');
+    const scoreEl = document.getElementById('score');
+
+    function loadQuestion() {
+      const q = quizData[currentQuestion];
+      questionEl.innerText = `Q${currentQuestion + 1}: ${q.question}`;
+      optionsEl.innerHTML = '';
+      q.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(index);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      if (selected === quizData[currentQuestion].answer) {
+        score++;
+      }
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        endQuiz();
+      }
+    }
+
+    function endQuiz() {
+      quizBox.classList.add('hidden');
+      resultEl.classList.remove('hidden');
+      scoreEl.innerText = `Your AI Literacy Score: ${score} / ${quizData.length}`;
+    }
+
+    function retryQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      quizBox.classList.remove('hidden');
+      resultEl.classList.add('hidden');
+      loadQuestion();
+    }
+
+    // Start quiz
+    loadQuestion();
+  </script>
+</body>
+</html>
